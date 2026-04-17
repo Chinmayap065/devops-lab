@@ -1,0 +1,25 @@
+services:
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - backend
+
+  app:
+    build: ./app
+    depends_on:
+      - redis
+    networks:
+      - backend
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - backend
+
+networks:
+  backend:
