@@ -18,6 +18,25 @@ def index():
         "visits": count
     })
 
+# 🔥 NEW ROUTE
+@app.route("/reset", methods=["POST"])
+def reset():
+    r.set("visits", 0)
+    return jsonify({
+        "message": "Visit counter reset",
+        "visits": 0
+    })
+
+# 🔥 NEW ROUTE
+@app.route("/stats")
+def stats():
+    visits = r.get("visits") or "0"
+    return jsonify({
+        "visits": int(visits),
+        "hostname": os.uname().nodename,
+        "redis_host": os.getenv("REDIS_HOST", "localhost")
+    })
+
 @app.route("/health")
 def health():
     return jsonify({"status": "ok"})
